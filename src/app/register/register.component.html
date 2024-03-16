@@ -1,1 +1,33 @@
-<p>register works!</p>
+<div class="">
+  <form
+    nz-form
+    [formGroup]="emailForm"
+    class="login-form"
+    (ngSubmit)="onSubmit()"
+  >
+    <nz-form-item>
+      <nz-form-control [nzErrorTip]="combineTpl">
+        <nz-input-group nzPrefixIcon="user">
+          <input
+            type="email"
+            nz-input
+            [formControlName]="formConfig.email"
+            placeholder="Email"
+          />
+        </nz-input-group>
+
+        <ng-template #combineTpl let-control>
+          @if (control.errors?.['email']) { Please enter a valid email. } @if
+          (control.errors?.['required']) { Input is required }
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary" [disabled]="emailForm.invalid">
+          Next
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>
