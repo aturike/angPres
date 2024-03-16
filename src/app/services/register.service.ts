@@ -26,7 +26,7 @@ export class RegisterService {
     return docData(emailDocRef, { idField: 'id' }) as Observable<IEmail>;
   }
 
-  async postData(
+  async postEmail(
     emailDoc: IEmail,
     emailDocId: string,
     onSuccess: () => void,
