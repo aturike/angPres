@@ -1,0 +1,29 @@
+.list-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.list-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(transparent, white);
+}
+
+.movingElement {
+  animation: moveUp 2s linear infinite;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes moveUp {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}

@@ -1,0 +1,10 @@
+<div class="h-full flex items-center justify-center">
+  <button nz-button nzType="primary" (click)="spin()">Spin</button>
+  <div class="list-container">
+    <div class="flex flex-col gap-2 h-20" [class.movingElement]="animate">
+      <span *ngFor="let introRules of introRules$ | async">{{
+        introRules.rule
+      }}</span>
+    </div>
+  </div>
+</div>

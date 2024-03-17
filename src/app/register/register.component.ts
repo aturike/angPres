@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IUser } from '../model/user.model';
+import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 
 interface IEmailFormConfig {
   userName: keyof IUser;
@@ -14,7 +17,8 @@ interface IEmailFormConfig {
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  emailForm: FormGroup;
+  userForm: FormGroup;
+  isEmailExist: boolean;
 
   formConfig: IEmailFormConfig = {
     userName: 'userName',
@@ -22,22 +26,67 @@ export class RegisterComponent implements OnInit {
     password: 'password',
   };
 
+  constructor(private auth: AuthService, private userService: UserService) {}
+
   ngOnInit(): void {
     this.initForm();
   }
 
   initForm() {
-    this.emailForm = new FormGroup({
+    this.userForm = new FormGroup({
       [this.formConfig.userName]: new FormControl('', [Validators.required]),
       [this.formConfig.email]: new FormControl('', [
         Validators.required,
         Validators.email,
       ]),
-      [this.formConfig.password]: new FormControl('', [Validators.required]),
+      [this.formConfig.password]: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
     });
   }
 
-  register() {}
+  async onEmailBlur() {
+    if (this.userForm.get([this.formConfig.email])?.invalid) {
+      return;
+    }
 
-  login() {}
+    const email = this.userForm.value[this.formConfig.email];
+
+    try {
+      const users = await this.auth.userExists(email);
+      this.isEmailExist = users.length > 0;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async register() {
+    const email = this.userForm.value[this.formConfig.email];
+    const userName = this.userForm.value[this.formConfig.userName];
+    const password = this.userForm.value[this.formConfig.password];
+
+    const userDoc: IUser = {
+      email,
+      userName,
+    };
+
+    try {
+      await this.auth.createUser(email, password);
+      await this.userService.createUser(userDoc);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async login() {
+    const email = this.userForm.value[this.formConfig.email];
+    const password = this.userForm.value[this.formConfig.password];
+
+    try {
+      await this.auth.signIn(email, password);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }

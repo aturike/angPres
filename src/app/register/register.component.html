@@ -1,13 +1,13 @@
-<div class="h-dvh flex flex-col items-center justify-center">
-  <form nz-form [formGroup]="emailForm" class="flex flex-col gap-0">
+<div class="h-full flex flex-col items-center justify-center">
+  <form nz-form [formGroup]="userForm" class="flex flex-col gap-0">
     <nz-form-item>
-      <nz-form-control nzErrorTip="Please input your username!">
+      <nz-form-control nzErrorTip="Please input your name!">
         <nz-input-group nzPrefixIcon="user">
           <input
             type="text"
             nz-input
             [formControlName]="formConfig.userName"
-            placeholder="Username"
+            placeholder="Name"
           />
         </nz-input-group>
       </nz-form-control>
@@ -17,6 +17,7 @@
         <nz-input-group nzPrefixIcon="mail">
           <input
             type="email"
+            (blur)="onEmailBlur()"
             nz-input
             [formControlName]="formConfig.email"
             placeholder="Email"
@@ -25,13 +26,13 @@
 
         <ng-template #combineTpl let-control>
           @if (control.errors?.['email']) { Please enter a valid email. } @if
-          (control.errors?.['required']) { Input is required }
+          (control.errors?.['required']) { Email is required }
         </ng-template>
       </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-control nzErrorTip="Please input your Password!">
+      <nz-form-control [nzErrorTip]="passWtmpl">
         <nz-input-group nzPrefixIcon="lock">
           <input
             type="password"
@@ -39,6 +40,10 @@
             [formControlName]="formConfig.password"
             placeholder="Password"
           />
+          <ng-template #passWtmpl let-control>
+            @if (control.errors?.['email']) { Password must be at least 6 char.
+            long } @if (control.errors?.['required']) { Password is required }
+          </ng-template>
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
@@ -46,8 +51,10 @@
   <div class="flex gap-3">
     <button
       nz-button
+      nz-tooltip
+      [nzTooltipTitle]="isEmailExist ? 'Email exist' : ''"
       nzType="primary"
-      [disabled]="emailForm.invalid"
+      [disabled]="userForm.invalid || isEmailExist"
       (click)="register()"
     >
       Register
@@ -56,7 +63,7 @@
     <button
       nz-button
       nzType="primary"
-      [disabled]="emailForm.invalid"
+      [disabled]="userForm.invalid || !isEmailExist"
       (click)="login()"
     >
       Login

@@ -1,0 +1,10 @@
+<div class="absolute flex justify-between items-center">
+  <button
+    *ngIf="isSignedIn$ | async"
+    nz-button
+    nzType="primary"
+    (click)="logOut()"
+  >
+    Logout
+  </button>
+</div>

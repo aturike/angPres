@@ -24,14 +24,8 @@ export class AuthService {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  userExists(email: string): Observable<boolean> {
-    return from(fetchSignInMethodsForEmail(this.auth, email)).pipe(
-      map((signInMethods) => signInMethods.length > 0),
-      catchError((error) => {
-        console.error('Error checking user existence:', error);
-        return of(false);
-      })
-    );
+  userExists(email: string): Promise<string[]> {
+    return fetchSignInMethodsForEmail(this.auth, email);
   }
 
   isSignedIn(): Observable<boolean> {

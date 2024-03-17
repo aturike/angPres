@@ -17,11 +17,20 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NavbarComponent } from './navbar/navbar.component';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { RulesComponent } from './rules/rules.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [AppComponent, RegisterComponent],
+  declarations: [
+    AppComponent,
+    RegisterComponent,
+    NavbarComponent,
+    RulesComponent,
+  ],
   imports: [
     BrowserModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -34,6 +43,8 @@ registerLocaleData(en);
     NzFormModule,
     NzInputModule,
     NzButtonModule,
+    NzToolTipModule,
+    NzIconModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
