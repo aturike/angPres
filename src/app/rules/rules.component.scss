@@ -1,29 +1,32 @@
-.list-container {
-  position: relative;
-  overflow: hidden;
-}
-
-.list-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(transparent, white);
-}
-
 .movingElement {
-  animation: moveUp 2s linear infinite;
-  position: relative;
-  z-index: 1;
+  animation: moveUp var(--animation-duration, 1s) linear infinite;
+}
+.movingFinish {
+  animation: moveUpFinish 1s linear;
 }
 
 @keyframes moveUp {
-  from {
-    transform: translateY(0%);
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
   }
-  to {
+  50% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  100% {
     transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes moveUpFinish {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 100;
   }
 }

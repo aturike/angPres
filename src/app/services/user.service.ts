@@ -3,11 +3,15 @@ import {
   Firestore,
   addDoc,
   collection,
+  collectionData,
   doc,
   docData,
+  getDocs,
+  query,
   setDoc,
+  where,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { IUser } from '../model/user.model';
 
 @Injectable({
@@ -16,9 +20,11 @@ import { IUser } from '../model/user.model';
 export class UserService {
   private firestore: Firestore = inject(Firestore);
 
-  getEmailById(id: string): Observable<IUser> {
-    const emailDocRef = doc(this.firestore, `users/${id}`);
-    return docData(emailDocRef, { idField: 'id' }) as Observable<IUser>;
+  getUserByEmail(email: string): Promise<any> {
+    const emailDocRef = collection(this.firestore, 'users');
+    const q = query(emailDocRef, where('email', '==', email));
+
+    return getDocs(q);
   }
 
   createUser(userDoc: IUser): Promise<any> {

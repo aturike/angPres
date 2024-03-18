@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, finalize, first, tap } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,10 +10,19 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'pres';
   isSignedin$: Observable<boolean>;
+  isLoading = false;
 
   constructor(private auth: AuthService) {}
 
   ngOnInit(): void {
-    this.isSignedin$ = this.auth.isSignedIn();
+    this.isSignedin$ = this.auth.isSignedIn().pipe(
+      first(),
+      tap(() => {
+        this.isLoading = true;
+      }),
+      finalize(() => {
+        this.isLoading = false;
+      })
+    );
   }
 }

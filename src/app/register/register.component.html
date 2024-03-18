@@ -17,7 +17,6 @@
         <nz-input-group nzPrefixIcon="mail">
           <input
             type="email"
-            (blur)="onEmailBlur()"
             nz-input
             [formControlName]="formConfig.email"
             placeholder="Email"
@@ -54,7 +53,7 @@
       nz-tooltip
       [nzTooltipTitle]="isEmailExist ? 'Email exist' : ''"
       nzType="primary"
-      [disabled]="userForm.invalid || isEmailExist"
+      [disabled]="userForm.invalid"
       (click)="register()"
     >
       Register
@@ -63,7 +62,7 @@
     <button
       nz-button
       nzType="primary"
-      [disabled]="userForm.invalid || !isEmailExist"
+      [disabled]="userForm.invalid"
       (click)="login()"
     >
       Login

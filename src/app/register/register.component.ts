@@ -54,8 +54,10 @@ export class RegisterComponent implements OnInit {
     const email = this.userForm.value[this.formConfig.email];
 
     try {
-      const users = await this.auth.userExists(email);
-      this.isEmailExist = users.length > 0;
+      const users = await this.userService.getUserByEmail(email);
+
+      this.isEmailExist = users.docs.length > 0;
+      // console.log(this.isEmailExist, users, email);
     } catch (error) {
       console.error(error);
     }

@@ -1,12 +1,11 @@
 <div class="relative h-dvh">
-  <ng-container *ngIf="isSignedin$ | async as isSignedIn; else loading">
+  <ng-container *ngIf="!isLoading">
     <app-navbar></app-navbar>
-    <app-register *ngIf="!isSignedIn"></app-register>
-    <app-rules *ngIf="isSignedIn"></app-rules>
+    <app-register *ngIf="!(isSignedin$ | async)"></app-register>
+    <app-rules *ngIf="isSignedin$ | async"></app-rules>
   </ng-container>
-  <ng-template #loading>
-    <div class="h-full flex items-center justify-center">
-      <span class="text-5xl" nz-icon nzType="loading" nzTheme="outline"></span>
-    </div>
-  </ng-template>
+
+  <div *ngIf="isLoading" class="h-full flex items-center justify-center">
+    <span class="text-5xl" nz-icon nzType="loading" nzTheme="outline"></span>
+  </div>
 </div>
