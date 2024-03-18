@@ -1,5 +1,10 @@
 <div class="h-full flex flex-col items-center justify-center">
   <form nz-form [formGroup]="userForm" class="flex flex-col gap-0">
+    <span
+      (click)="toggleLogin()"
+      class="text-xs self-end py-4 cursor-pointer"
+      >{{ showLogin ? "Register" : "Login" }}</span
+    >
     <nz-form-item>
       <nz-form-control nzErrorTip="Please input your name!">
         <nz-input-group nzPrefixIcon="user">
@@ -49,9 +54,8 @@
   </form>
   <div class="flex gap-3">
     <button
+      *ngIf="!showLogin"
       nz-button
-      nz-tooltip
-      [nzTooltipTitle]="isEmailExist ? 'Email exist' : ''"
       nzType="primary"
       [disabled]="userForm.invalid"
       (click)="register()"
@@ -60,6 +64,7 @@
     </button>
 
     <button
+      *ngIf="showLogin"
       nz-button
       nzType="primary"
       [disabled]="userForm.invalid"

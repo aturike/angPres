@@ -18,7 +18,7 @@ interface IEmailFormConfig {
 })
 export class RegisterComponent implements OnInit {
   userForm: FormGroup;
-  isEmailExist: boolean;
+  showLogin: boolean;
 
   formConfig: IEmailFormConfig = {
     userName: 'userName',
@@ -30,6 +30,10 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+  }
+
+  toggleLogin() {
+    this.showLogin = !this.showLogin;
   }
 
   initForm() {
@@ -44,23 +48,6 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(6),
       ]),
     });
-  }
-
-  async onEmailBlur() {
-    if (this.userForm.get([this.formConfig.email])?.invalid) {
-      return;
-    }
-
-    const email = this.userForm.value[this.formConfig.email];
-
-    try {
-      const users = await this.userService.getUserByEmail(email);
-
-      this.isEmailExist = users.docs.length > 0;
-      // console.log(this.isEmailExist, users, email);
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   async register() {
